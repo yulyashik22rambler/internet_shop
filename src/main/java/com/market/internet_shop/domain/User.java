@@ -29,7 +29,7 @@ public class User {
     private Role role;
 
     @OneToOne(cascade = CascadeType.REMOVE)
-    private Basket basket;
+    private Bucket basket;
 
 
 }

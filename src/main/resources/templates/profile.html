@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml" >
 <head>
-    <title>Add user</title>
+    <title>User profile</title>
     <meta charset="UTF-8">
 </head>
 <body>
-<form th:action="@{/users/new}" th:object="${user}user.html" method="post">
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+<h1>User profile</h1>
+<form th:action="@{/users/profile}" th:object="${user}" method="post">
     <table border="1">
         <tr>
             <td>Name</td>

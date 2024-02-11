@@ -50,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users/new").hasAnyAuthority(Role.ADMIN.name())
-               //  .antMatchers("/users").hasAnyAuthority(Role.CLIENT.name(), Role.CLIENT.name())
+               .antMatchers("/users/new").hasAnyAuthority(Role.ADMIN.name())
+               .antMatchers("/users").hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
                 .anyRequest().permitAll()
                 .and()
                     .formLogin()
