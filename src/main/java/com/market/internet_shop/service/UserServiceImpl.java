@@ -10,32 +10,50 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+@Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserServiceImpl userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
 
-    public UserServiceImpl(UserServiceImpl userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
+    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
+
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
     public boolean save(UserDTO userDTO) {
-        if (!Objects.equals(userDTO.getPassword(), userDTO.getMatchedPassword())) {
+        if (!Objects.equals(userDTO.getPassword(), userDTO.getMatchingPassword())) {
             throw new RuntimeException("Password is not equals");
         }
-        User user = User.builder().name(userDTO.getName()).password(passwordEncoder.encode(userDTO.getPassword())).email(userDTO.getEmail()).role(Role.CLIENT).build();
-        userRepository.save(user);
+        User user = User.builder()
+                .name(userDTO.getUsername())
+                .password(this.passwordEncoder.encode(userDTO.getPassword()))
+                .email(userDTO.getEmail())
+                .role(Role.CLIENT).build();
+        this.userRepository.save(user);
         return true;
+    }
+
+    @Override
+    public List<UserDTO> getAll() {
+        return  this.userRepository.findAll().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    private UserDTO toDto(User user) {
+        return UserDTO.builder()
+                .username(user.getName())
+                .email(user.getEmail())
+                .build();
     }
 
     @Override
