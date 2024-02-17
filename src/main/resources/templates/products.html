@@ -13,12 +13,11 @@
             <td>Price</td>
         </tr>
         <tr th:each="product : ${products}">
-            <td th:text="${product.username}">Product</td>
-            <td th:text="${product.email}">12.0</td>
+            <td th:text="${product.title}">Product</td>
+            <td th:text="${product.price}">12.0</td>
         </tr>
      </table>
 <br>
-<a th:href="@{users/new}">Add new product</a>
 </div>
 </body>
 </html>

@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                .antMatchers("/users/new").hasAnyAuthority(Role.ADMIN.name())
                .antMatchers("/users").hasAnyAuthority(Role.ADMIN.name(), Role.MANAGER.name())
-                .anyRequest().permitAll()
+               .anyRequest().permitAll()
                 .and()
                     .formLogin()
                     .loginPage("/login")

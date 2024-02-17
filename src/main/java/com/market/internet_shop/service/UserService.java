@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {//for security
   boolean save(UserDTO paramUserDTO);
-
+  void save(User user);
     List<UserDTO> getAll();
 
   User findByName(String name);

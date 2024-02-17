@@ -4,7 +4,6 @@ import com.market.internet_shop.dao.UserRepository;
 import com.market.internet_shop.domain.Role;
 import com.market.internet_shop.domain.User;
 import com.market.internet_shop.dto.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,6 +39,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void save(User user) {
+        this.userRepository.save(user);
+    }
+
+    @Override
     public List<UserDTO> getAll() {
         return this.userRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
     }
@@ -61,12 +65,11 @@ public class UserServiceImpl implements UserService {
             savedUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             isChanged = true;
         }
-        if(!Objects.equals(userDTO.getEmail(),savedUser.getEmail()))
-        {savedUser.setEmail(userDTO.getEmail());
-        isChanged=true;
+        if (!Objects.equals(userDTO.getEmail(), savedUser.getEmail())) {
+            savedUser.setEmail(userDTO.getEmail());
+            isChanged = true;
         }
-        if (isChanged)
-        {
+        if (isChanged) {
             userRepository.save(savedUser);
         }
 
